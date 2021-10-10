@@ -36,19 +36,19 @@ void initButtons()
 
 void setup()
 {
-    initButtons()
-    initRGB()
+    initButtons();
+    initRGB();
 }
 
 void loop()
 {
     if (digitalRead(GREEN_BUTTON) == LOW)
-        LED_BRIGHTNESS = LED_BRIGHTNESS < LED_MAX ? LED_BRIGHTNESS + 1 : LED_MAX
+        LED_BRIGHTNESS = LED_BRIGHTNESS < LED_MAX ? LED_BRIGHTNESS + 1 : LED_MAX;
 
     if (digitalRead(RED_BUTTON) == LOW)
-        LED_BRIGHTNESS = LED_BRIGHTNESS > LED_MIN ? LED_BRIGHTNESS - 1 : LED_MIN
+        LED_BRIGHTNESS = LED_BRIGHTNESS > LED_MIN ? LED_BRIGHTNESS - 1 : LED_MIN;
    
     analogWrite(LED_RED, LED_BRIGHTNESS);
 
-    delay(100);
+    delay(5);
 }

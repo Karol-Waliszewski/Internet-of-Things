@@ -63,9 +63,9 @@ void loop()
     if (digitalRead(GREEN_BUTTON) == LOW)
         changeLedColor();
 
+    turnLedOff();
+    
     if (digitalRead(RED_BUTTON) == LOW)
-        turnLedOff();
-    else 
         digitalWrite(CURRENT_COLOR, HIGH);
 
     delay(100);

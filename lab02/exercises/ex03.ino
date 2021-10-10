@@ -40,32 +40,31 @@ void initButtons()
 }
 
 void changeLedBrightness(){
-    LED_BRIGHTNESS = (LED_BRIGHTNESS + 2) % (LED_MAX - LED_MIN + 1) + LED_MIN
+    LED_BRIGHTNESS = (LED_BRIGHTNESS + 2) % (LED_MAX - LED_MIN + 1) + LED_MIN;
 }
 
 void changeLedColor(){
-    if(LED_BRIGHTNESS == LED_MAX)
-    {
-        PREVIOUS_COLOR = CURRENT_COLOR;
 
-        if(CURRENT_COLOR == LED_GREEN){
-            CURRENT_COLOR = LED_BLUE;
-        }
-    
-        if(CURRENT_COLOR == LED_RED){
-            CURRENT_COLOR = LED_GREEN;
-        }
+    PREVIOUS_COLOR = CURRENT_COLOR;
 
-        if(CURRENT_COLOR == LED_BLUE){
-            CURRENT_COLOR = LED_RED;
-        }
+    if(CURRENT_COLOR == LED_GREEN){
+        CURRENT_COLOR = LED_BLUE;
     }
+    
+    else if(CURRENT_COLOR == LED_RED){
+        CURRENT_COLOR = LED_GREEN;
+    }
+
+    else if(CURRENT_COLOR == LED_BLUE){
+        CURRENT_COLOR = LED_RED;
+    }
+    
 }
 
 void setup()
 {
-    initButtons()
-    initRGB()
+    initButtons();
+    initRGB();
 }
 
 void loop()
@@ -74,7 +73,9 @@ void loop()
     analogWrite(CURRENT_COLOR, LED_BRIGHTNESS);
 
     changeLedBrightness();
-    changeLedColor();
 
-    delay(100);
+    if (LED_BRIGHTNESS == 0)
+        changeLedColor();
+
+    delay(10);
 }
