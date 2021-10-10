@@ -1,0 +1,80 @@
+#define LED_RED 6
+#define LED_GREEN 5
+#define LED_BLUE 3
+
+#define RED_BUTTON 2
+#define GREEN_BUTTON 4
+
+int CURRENT_COLOR;
+int PREVIOUS_COLOR;
+int LED_BRIGHTNESS;
+int LED_MIN;
+int LED_MAX;
+
+void initRGB()
+{
+    pinMode(LED_BUILTIN, OUTPUT);
+    digitalWrite(LED_BUILTIN, LOW);
+
+    pinMode(LED_RED, OUTPUT);
+    digitalWrite(LED_RED, LOW);
+
+    pinMode(LED_GREEN, OUTPUT);
+    digitalWrite(LED_GREEN, LOW);
+
+    pinMode(LED_BLUE, OUTPUT);
+    digitalWrite(LED_BLUE, LOW);
+
+    LED_MIN = 0;
+    LED_MAX = 255;
+    LED_BRIGHTNESS = LED_MIN;
+
+    PREVIOUS_COLOR = LED_BLUE;
+    CURRENT_COLOR = LED_RED;
+}
+
+void initButtons()
+{
+    pinMode(RED_BUTTON, INPUT_PULLUP);
+    pinMode(GREEN_BUTTON, INPUT_PULLUP);
+}
+
+void changeLedBrightness(){
+    LED_BRIGHTNESS = (LED_BRIGHTNESS + 2) % (LED_MAX - LED_MIN + 1) + LED_MIN
+}
+
+void changeLedColor(){
+    if(LED_BRIGHTNESS == LED_MAX)
+    {
+        PREVIOUS_COLOR = CURRENT_COLOR;
+
+        if(CURRENT_COLOR == LED_GREEN){
+            CURRENT_COLOR = LED_BLUE;
+        }
+    
+        if(CURRENT_COLOR == LED_RED){
+            CURRENT_COLOR = LED_GREEN;
+        }
+
+        if(CURRENT_COLOR == LED_BLUE){
+            CURRENT_COLOR = LED_RED;
+        }
+    }
+}
+
+void setup()
+{
+    initButtons()
+    initRGB()
+}
+
+void loop()
+{  
+    analogWrite(PREVIOUS_COLOR, LED_MAX - LED_BRIGHTNESS);
+    analogWrite(CURRENT_COLOR, LED_BRIGHTNESS);
+
+    changeLedBrightness();
+    changeLedColor();
+
+    delay(100);
+}
