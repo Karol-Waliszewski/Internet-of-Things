@@ -20,6 +20,8 @@ void initRGB()
 
     pinMode(LED_BLUE, OUTPUT);
     digitalWrite(LED_BLUE, LOW);
+
+    CURRENT_COLOR = LED_BLUE;
 }
 
 void initButtons()
@@ -35,32 +37,17 @@ void turnLedOff()
     digitalWrite(LED_GREEN, LOW);
 }
 
-void turnLedOn()
-{
-    if(CURRENT_COLOR == LED_GREEN){
-         digitalWrite(LED_GREEN, HIGH);
-    }
-  
-    if(CURRENT_COLOR == LED_RED){
-         digitalWrite(LED_RED, HIGH);
-    }
-
-    if(CURRENT_COLOR == LED_BLUE){
-         digitalWrite(LED_BLUE, HIGH);
-    }
-}
-
 void changeLedColor()
 {
     if(CURRENT_COLOR == LED_GREEN){
         CURRENT_COLOR = LED_RED;
     }
   
-    if(CURRENT_COLOR == LED_RED){
+    else if(CURRENT_COLOR == LED_RED){
         CURRENT_COLOR = LED_BLUE;
     }
 
-    if(CURRENT_COLOR == LED_BLUE){
+    else if(CURRENT_COLOR == LED_BLUE){
         CURRENT_COLOR = LED_GREEN;
     }
 }
@@ -69,8 +56,6 @@ void setup()
 {
     initRGB();
     initButtons();
-
-    CURRENT_COLOR = LED_BLUE;
 }
 
 void loop()
@@ -81,7 +66,7 @@ void loop()
     if (digitalRead(RED_BUTTON) == LOW)
         turnLedOff();
     else 
-        turnLedOn();
+        digitalWrite(CURRENT_COLOR, HIGH);
 
     delay(100);
 
