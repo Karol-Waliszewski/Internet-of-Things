@@ -1,0 +1,7 @@
+{
+    "sketch": "lab02/exercises/ex02.ino",
+    "board": "arduino:avr:uno",
+    "programmer": "arduino:avrispmkii",
+    "output": "build",
+    "port": "/dev/cu.usbmodem1401"
+}

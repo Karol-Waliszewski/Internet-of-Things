@@ -33,12 +33,6 @@ void initRGB()
     CURRENT_COLOR = LED_RED;
 }
 
-void initButtons()
-{
-    pinMode(RED_BUTTON, INPUT_PULLUP);
-    pinMode(GREEN_BUTTON, INPUT_PULLUP);
-}
-
 void changeLedBrightness(){
     LED_BRIGHTNESS = (LED_BRIGHTNESS + 2) % (LED_MAX - LED_MIN + 1) + LED_MIN;
 }
@@ -63,7 +57,6 @@ void changeLedColor(){
 
 void setup()
 {
-    initButtons();
     initRGB();
 }
 

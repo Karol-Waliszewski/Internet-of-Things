@@ -1,7 +1,3 @@
 {
-    "sketch": "kod04/kod04.ino",
-    "board": "arduino:avr:uno",
-    "programmer": "arduino:avrispmkii",
-    "output": "build",
-    "port": "/dev/cu.usbserial-1140"
+    "port": "/dev/cu.usbmodem1401"
 }
