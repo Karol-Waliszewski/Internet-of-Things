@@ -21,7 +21,7 @@ void setup()
     initRGB();
 }
 
-static void blinkGreenLed()
+void blinkGreenLed()
 {
     const unsigned long Delay = 1000UL;
     static int ledState = LOW;
@@ -35,7 +35,7 @@ static void blinkGreenLed()
     }
 }
 
-static void blinkRedLed()
+void blinkRedLed()
 {
     const unsigned long Delay = 900UL;
     static int ledState = LOW;
@@ -49,7 +49,7 @@ static void blinkRedLed()
     }
 }
 
-static void blinkBlueLed()
+void blinkBlueLed()
 {
     const unsigned long Delay = 1100UL;
     static int ledState = LOW;
