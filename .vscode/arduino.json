@@ -3,5 +3,5 @@
     "programmer": "arduino:avrispmkii",
     "port": "/dev/cu.usbserial-10",
     "output": "build",
-    "sketch": "lab01/examples/code04/code04.ino"
+    "sketch": "lab04/kod/kod03/kod03.ino"
 }
