@@ -10,6 +10,6 @@ void setup()
 
 void loop()
 {
-    String value = String(analogRead(POTENTIOMETER));
+    int value = analogRead(POTENTIOMETER);
     Serial.println(value);
 }
