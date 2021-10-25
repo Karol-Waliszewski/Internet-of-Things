@@ -1,5 +1,7 @@
+#include <LiquidCrystal_I2C.h>
 #define RED_BUTTON 2
 #define GREEN_BUTTON 4
+LiquidCrystal_I2C lcd(0x27, 16, 2);
 
 void initButtons()
 {
@@ -9,6 +11,8 @@ void initButtons()
 
 void setup()
 {
+    lcd.init();
+    lcd.noBacklight();
     initButtons();
     Serial.begin(9600);
     while (!Serial)

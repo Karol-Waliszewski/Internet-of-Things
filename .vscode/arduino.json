@@ -1,7 +1,7 @@
 {
     "board": "arduino:avr:uno",
     "programmer": "arduino:avrispmkii",
-    "port": "/dev/cu.usbserial-10",
+    "port": "/dev/cu.usbmodem1401",
     "output": "build",
-    "sketch": "lab04/kod/kod03/kod03.ino"
+    "sketch": "lab03/exercises/ex01/ex01.ino"
 }

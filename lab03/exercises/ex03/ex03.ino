@@ -3,11 +3,11 @@
 
 #define DEBOUNCE_PERIOD 10UL
 
-#include<LiquidCrystal.h>
-LiquidCrystal lcd(12, 11, 7, 10, 9, 8);
+//#include<LiquidCrystal.h>
+//LiquidCrystal lcd(12, 11, 7, 10, 9, 8);
 
-// #include <LiquidCrystal_I2C.h>
-// LiquidCrystal_I2C lcd(0x27, 16, 2);
+#include <LiquidCrystal_I2C.h>
+LiquidCrystal_I2C lcd(0x27, 16, 2);
 
 bool running;
 int counter;
@@ -125,6 +125,8 @@ void setup()
 {
     initButtons();
     initCounter();
+    lcd.init();
+    lcd.backlight();
 }
 
 

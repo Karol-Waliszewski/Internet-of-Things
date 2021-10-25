@@ -1,6 +1,8 @@
 #define LED_RED 6
 #define LED_GREEN 5
 #define LED_BLUE 3
+#include <LiquidCrystal_I2C.h>
+LiquidCrystal_I2C lcd(0x27, 16, 2);
 
 void initRGB()
 {
@@ -37,30 +39,11 @@ int convertBrightness(String brightness) {
     return converted;
 } 
 
-String monitorFeedback(String color, int brightness){
+void monitorFeedback(String color, int brightness){
     Serial.println(color + " at " + brightness);
 }
 
-void setup()
-{
-    initRGB();
-    Serial.begin(9600);
-    while (!Serial)
-    { /* just wait */
-    }
-}
-
-void loop()
-{
- 
-   if (Serial.available() > 0)
-    {
-        String color = Serial.readStringUntil(':');
-        color.trim();
-        color.toLowerCase();
-     
-        int brightness = convertBrightness(Serial.readStringUntil('\n'));
-
+void changeColor(String color, int brightness) {
         if (color == "blue")
         {
             analogWrite(LED_BLUE, brightness);
@@ -76,9 +59,37 @@ void loop()
             analogWrite(LED_GREEN, brightness);
             monitorFeedback(color, brightness);
         }
+        else if (color == "builtin")
+        {
+            digitalWrite(LED_BUILTIN, digitalRead(LED_BUILTIN) == HIGH ? LOW : HIGH);
+            monitorFeedback(color, digitalRead(LED_BUILTIN) == HIGH ? LOW : HIGH * 100);
+        }
         else
         {
             Serial.println(String("Unknown color '") + color + "'");
         }
+}
+
+void setup()
+{
+    initRGB();
+    lcd.init();
+    Serial.begin(9600);
+    while (!Serial)
+    { /* just wait */
+    }
+}
+
+void loop()
+{
+   if (Serial.available() > 0)
+    {
+        String color = Serial.readStringUntil(':');
+        color.trim();
+        color.toLowerCase();
+     
+        int brightness = convertBrightness(Serial.readStringUntil('\n'));
+        changeColor(color, brightness);
+        
     }
 }
