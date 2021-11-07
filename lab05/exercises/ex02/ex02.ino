@@ -5,6 +5,7 @@ LiquidCrystal_I2C lcd(0x27, 16, 2);
 #define GREEN_BUTTON 4
 
 #define LED_RED 6
+#define LED_GREEN 5
 #define LED_BLUE 3
 
 #define ENCODER1 A2
@@ -12,7 +13,7 @@ LiquidCrystal_I2C lcd(0x27, 16, 2);
 
 #define DEBOUNCE_PERIOD 10UL
 
-String MENU[4] = {"Option 1", "Option 2", "Option 3", "Option 4"};
+String MENU[4] = {"RED", "Green", "Blue", "Off"};
 int MENU_LENGTH;
 int menuIndex;
 
@@ -27,7 +28,17 @@ void initButtons(){
 }
 
 void initLed(){
-    
+    pinMode(LED_BUILTIN, OUTPUT);
+    digitalWrite(LED_BUILTIN, LOW);
+
+    pinMode(LED_RED, OUTPUT);
+    digitalWrite(LED_RED, LOW);
+
+    pinMode(LED_GREEN, OUTPUT);
+    digitalWrite(LED_GREEN, LOW);
+
+    pinMode(LED_BLUE, OUTPUT);
+    digitalWrite(LED_BLUE, LOW);
 }
 
 void initLcd(){
@@ -64,6 +75,18 @@ void scrollMenu(int by){
         }else {
             menuIndex = menuIndex + by;
         }
+    }
+}
+
+void runMenuOption(int option){
+    if(option == 1){
+        toggleLED(LED_RED);
+    }else if (option == 2){
+        toggleLED(LED_GREEN);
+    }else if(option == 3){
+        toggleLED(LED_BLUE);
+    }else if(option == 4){
+        offLED();
     }
 }
 
@@ -127,6 +150,16 @@ bool isRedButtonPressed()
     previous_reading = current_reading;
 
     return isPressed;
+}
+
+void toggleLED(int color){
+    digitalWrite(color, digitalRead(color) == LOW ? HIGH : LOW);
+}
+
+void offLED(int color){
+    digitalWrite(LED_RED, LOW);
+    digitalWrite(LED_GREEN, LOW);
+    digitalWrite(LED_BLUE, LOW);
 }
 
 void setup()
