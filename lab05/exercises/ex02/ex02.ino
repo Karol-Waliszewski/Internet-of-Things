@@ -11,11 +11,18 @@ LiquidCrystal_I2C lcd(0x27, 16, 2);
 #define ENCODER1 A2
 #define ENCODER2 A3
 
-#define DEBOUNCE_PERIOD 10UL
+#define DEBOUNCE_PERIOD 20UL
 
-String MENU[4] = {"RED", "Green", "Blue", "Off"};
+String MENU[3] = {"Red", "Green", "Blue"};
 int MENU_LENGTH;
 int menuIndex;
+bool isSubMenu = false;
+int LEDS[3] = {0, 0, 0};
+int minLED = 0;
+int maxLED = 255;
+
+int prevEn1 = LOW;
+unsigned long lastChangeTimestamp = 0UL;
 
 void initEncoder(){
     pinMode(ENCODER1, INPUT_PULLUP);
@@ -50,14 +57,25 @@ void initLcd(){
 void initMenu(){
     menuIndex = 0;
     MENU_LENGTH = sizeof(MENU) / sizeof(MENU[0]);
+    if(MENU_LENGTH >= 2){
+        printMenu(MENU[0], MENU[1]);
+    }else if(MENU_LENGTH == 1){
+        printMenu(MENU[0], " ");
+    }
 }
 
 void printMenu(String top, String bottom){
     lcd.clear();
     lcd.setCursor(0, 0);
-    lcd.print(top);
+    lcd.print("> " + top);
     lcd.setCursor(0, 1);
     lcd.print(bottom);
+}
+
+void printBrightnessMenu(){
+    lcd.clear();
+    lcd.setCursor(0, 0);
+    lcd.print(MENU[menuIndex] + ": " + LEDS[menuIndex]);
 }
 
 void scrollMenu(int by){
@@ -78,15 +96,13 @@ void scrollMenu(int by){
     }
 }
 
-void runMenuOption(int option){
-    if(option == 1){
-        toggleLED(LED_RED);
-    }else if (option == 2){
-        toggleLED(LED_GREEN);
-    }else if(option == 3){
-        toggleLED(LED_BLUE);
-    }else if(option == 4){
-        offLED();
+void updateLED(int option, int brightness){
+    if(option == 0){
+        analogWrite(LED_RED, brightness);
+    }else if (option == 1){
+        analogWrite(LED_GREEN, brightness);
+    }else if(option == 2){
+        analogWrite(LED_BLUE, brightness);
     }
 }
 
@@ -152,16 +168,6 @@ bool isRedButtonPressed()
     return isPressed;
 }
 
-void toggleLED(int color){
-    digitalWrite(color, digitalRead(color) == LOW ? HIGH : LOW);
-}
-
-void offLED(int color){
-    digitalWrite(LED_RED, LOW);
-    digitalWrite(LED_GREEN, LOW);
-    digitalWrite(LED_BLUE, LOW);
-}
-
 void setup()
 {
    initEncoder();
@@ -172,22 +178,72 @@ void setup()
 }
 
 void loop(){
+    int en1 = digitalRead(ENCODER1);
+    int en2 = digitalRead(ENCODER2);
     bool redPressed = isRedButtonPressed();
     bool greenPressed = isGreenButtonPressed();
 
+    unsigned long timestamp = millis();
+    bool encoderMoved = en1 == LOW && prevEn1 == HIGH && timestamp > lastChangeTimestamp + DEBOUNCE_PERIOD;
+    if (encoderMoved){
+        if (en2 == HIGH){
+            if(isSubMenu){
+                if (LEDS[menuIndex] < maxLED){
+                    LEDS[menuIndex] = LEDS[menuIndex] + 15 > maxLED ? maxLED : LEDS[menuIndex] + 15;
+                }
+            }else {
+                scrollMenu(1);
+            }
+            
+        }
+        else{
+            if(isSubMenu){
+                if (LEDS[menuIndex] > minLED){
+                    LEDS[menuIndex] = LEDS[menuIndex] - 15 < minLED ? minLED : LEDS[menuIndex] - 15;
+                }
+            }else {
+                scrollMenu(-1);
+            }
+        }
+        lastChangeTimestamp = timestamp;
+
+        if(isSubMenu){
+            printBrightnessMenu();
+        }else {
+            if(MENU_LENGTH == 1 || menuIndex == MENU_LENGTH - 1) {
+                printMenu(MENU[menuIndex], "");
+            }else if(MENU_LENGTH >= 2){
+                printMenu(MENU[menuIndex], MENU[menuIndex + 1]);
+            }
+        }
+        
+    }
+
     if(greenPressed){
-        scrollMenu(1);
+       isSubMenu = true;
     }
 
     if(redPressed){
-        scrollMenu(-1);
+       isSubMenu = false;
     }
 
-    if(greenPressed || redPressed){
-        if(MENU_LENGTH == 1 || menuIndex == MENU_LENGTH - 1) {
-            printMenu(MENU[menuIndex], "");
-        }else if(MENU_LENGTH >= 2){
-            printMenu(MENU[menuIndex], MENU[menuIndex + 1]);
+    if(encoderMoved && isSubMenu){
+        updateLED(menuIndex, LEDS[menuIndex]);
+    }
+
+    if(redPressed || greenPressed || encoderMoved){
+        if(isSubMenu){
+            printBrightnessMenu();
+        }else {
+            if(MENU_LENGTH == 1 || menuIndex == MENU_LENGTH - 1) {
+                printMenu(MENU[menuIndex], "");
+            }else if(MENU_LENGTH >= 2){
+                printMenu(MENU[menuIndex], MENU[menuIndex + 1]);
+            }
         }
     }
+
+    
+
+    prevEn1 = en1;
 }
