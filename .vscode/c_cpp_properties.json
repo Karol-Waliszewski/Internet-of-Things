@@ -30,8 +30,10 @@
             "includePath": [
                 "/Applications/Arduino.app/Contents/Java/hardware/arduino/avr/cores/arduino",
                 "/Applications/Arduino.app/Contents/Java/hardware/arduino/avr/variants/standard",
-                "/Users/karolwaliszewski/Documents/Arduino/libraries/LiquidCrystal_I2C",
                 "/Applications/Arduino.app/Contents/Java/hardware/arduino/avr/libraries/Wire/src",
+                "/Users/karolwaliszewski/Documents/Arduino/libraries/LiquidCrystal_I2C",
+                "/Users/karolwaliszewski/Documents/Arduino/libraries/OneWire",
+                "/Users/karolwaliszewski/Documents/Arduino/libraries/DallasTemperature",
                 "/Applications/Arduino.app/Contents/Java/hardware/tools/avr/lib/gcc/avr/7.3.0/include",
                 "/Applications/Arduino.app/Contents/Java/hardware/tools/avr/lib/gcc/avr/7.3.0/include-fixed",
                 "/Applications/Arduino.app/Contents/Java/hardware/tools/avr/avr/include"

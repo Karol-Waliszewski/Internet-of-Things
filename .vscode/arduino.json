@@ -3,5 +3,5 @@
     "programmer": "arduino:avrispmkii",
     "port": "/dev/cu.usbmodem1401",
     "output": "build",
-    "sketch": "lab05/exercises/ex02/ex02.ino"
+    "sketch": "lab06/exercises/ex01/ex01.ino"
 }
